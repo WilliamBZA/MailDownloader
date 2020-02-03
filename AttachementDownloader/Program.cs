@@ -15,7 +15,9 @@ namespace AttachementDownloader
             var transport = endpointConfiguration.UseTransport<SqlServerTransport>();
             var connection = @"Data Source=(localdb)\ProjectsV13;Initial Catalog=Mail;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             transport.ConnectionString(connection);
+
             transport.Transactions(TransportTransactionMode.ReceiveOnly);
+            transport.TransactionScopeOptions(TimeSpan.FromMinutes(20), System.Transactions.IsolationLevel.ReadCommitted);
             
             transport.NativeDelayedDelivery().DisableTimeoutManagerCompatibility();
 
